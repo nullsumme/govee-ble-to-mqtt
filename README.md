@@ -1,6 +1,6 @@
 # Govee BLE to MQTT Bridge
 
-This Python script listens for BLE advertisements from Govee devices, processes the data, and publishes it to an MQTT broker. It supports optional username and password authentication for the MQTT broker.
+This Python script listens for BLE advertisements from Govee devices, processes the data, and publishes it to an MQTT broker. It supports optional username and password authentication for the MQTT broker, as well as optional Home Assistant autodiscovery messages.
 
 ## Features
 
@@ -9,6 +9,7 @@ This Python script listens for BLE advertisements from Govee devices, processes 
 - Publishes processed data to an MQTT broker.
 - Supports optional MQTT authentication.
 - Provides options for verbose output and raw data printing.
+- Optionally sends Home Assistant autodiscovery messages.
 
 ## Requirements
 
@@ -40,7 +41,7 @@ This Python script listens for BLE advertisements from Govee devices, processes 
 ```bash
 usage: goveelog.py [-h] [-r] [--mqtt_host MQTT_HOST] [--mqtt_port MQTT_PORT]
                    [--mqtt_topic MQTT_TOPIC] [--mqtt_username MQTT_USERNAME]
-                   [--mqtt_password MQTT_PASSWORD] [-v]
+                   [--mqtt_password MQTT_PASSWORD] [--ha_discovery] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -55,6 +56,7 @@ optional arguments:
                         MQTT username
   --mqtt_password MQTT_PASSWORD
                         MQTT password
+  --ha_discovery        enable Home Assistant autodiscovery messages
   -v, --verbose         verbose output to watch the threads
 ```
 
@@ -82,6 +84,14 @@ Provide MQTT username and password for authentication.
 
 ```bash
 python3 goveelog.py --mqtt_host example.com --mqtt_port 1884 --mqtt_username yourusername --mqtt_password yourpassword
+```
+
+### Enable Home Assistant Autodiscovery
+
+Enable Home Assistant autodiscovery messages.
+
+```bash
+python3 goveelog.py --ha_discovery
 ```
 
 ### Verbose Mode
@@ -118,7 +128,7 @@ To run the script as a service on a Linux system, you can create a systemd servi
     [Service]
     User=yourusername
     WorkingDirectory=/path/to/govee-ble-to-mqtt
-    ExecStart=/path/to/govee-ble-to-mqtt/.venv/bin/python /path/to/govee-ble-to-mqtt/goveelog.py --mqtt_host your_mqtt_host --mqtt_port your_mqtt_port --mqtt_topic your_mqtt_topic --mqtt_username your_mqtt_username --mqtt_password your_mqtt_password
+    ExecStart=/path/to/govee-ble-to-mqtt/.venv/bin/python /path/to/govee-ble-to-mqtt/goveelog.py --mqtt_host your_mqtt_host --mqtt_port your_mqtt_port --mqtt_topic your_mqtt_topic --mqtt_username your_mqtt_username --mqtt_password your_mqtt_password --ha_discovery
     Restart=always
 
     [Install]
